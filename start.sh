@@ -3,11 +3,18 @@
 
 set -e
 
+# Check for environment argument
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 dev|prod"
+    exit 1
+fi
+
+ENVIRONMENT=$1
+echo "Environment: $ENVIRONMENT"
+
 # Variables
 VENV_DIR="venv"
 REQUIREMENTS_FILE="requirements.txt"
-CONFIG_FILE="config.py"
-TABLES_FILE="tables.sql"
 SERVICE_FILE="svc.py"
 LOG_FILE="flask.log"
 FLASK_PORT=3001
@@ -36,39 +43,7 @@ echo_info "Installing Python dependencies..."
 pip install --upgrade pip
 pip install -r "$REQUIREMENTS_FILE"
 
-# 2. Ensure PostgreSQL is Installed
-if ! command -v psql &> /dev/null; then
-    echo_info "PostgreSQL not found. Please install PostgreSQL manually."
-    exit 1
-else
-    echo_info "PostgreSQL is already installed."
-fi
-
-# 3. Start PostgreSQL Service
-echo_info "Starting PostgreSQL service..."
-brew services start postgresql
-
-# 4. Create Database and User from config.py
-echo_info "Configuring PostgreSQL database and user..."
-
-# Extract database credentials from config.py
-DB_NAME=$(grep "DB_NAME" "$CONFIG_FILE" | cut -d '"' -f2)
-DB_USER=$(grep "DB_USER" "$CONFIG_FILE" | cut -d '"' -f2)
-DB_PASSWORD=$(grep "DB_PASSWORD" "$CONFIG_FILE" | cut -d '"' -f2)
-
-# Create user if it doesn't exist
-psql postgres -tc "SELECT 1 FROM pg_roles WHERE rolname = '$DB_USER'" | grep -q 1 || \
-psql postgres -c "CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';"
-
-# Create database if it doesn't exist
-psql postgres -tc "SELECT 1 FROM pg_database WHERE datname = '$DB_NAME'" | grep -q 1 || \
-psql postgres -c "CREATE DATABASE $DB_NAME OWNER $DB_USER;"
-
-# 5. Run tables.sql to Create Necessary Tables
-echo_info "Applying database schema..."
-psql -U "$DB_USER" -d "$DB_NAME" -f "$TABLES_FILE"
-
-# 6. Start Flask Service
+# 2. Start Flask Service
 echo_info "Starting Flask service on port $FLASK_PORT..."
 # Check if Flask is already running on the specified port
 if lsof -i:$FLASK_PORT | grep LISTEN &> /dev/null; then

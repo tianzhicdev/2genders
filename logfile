@@ -1,0 +1,20 @@
+2025-02-26 20:22:13.416 EST [29799] LOG:  starting PostgreSQL 14.15 (Homebrew) on aarch64-apple-darwin24.1.0, compiled by Apple clang version 16.0.0 (clang-1600.0.26.4), 64-bit
+2025-02-26 20:22:13.418 EST [29799] LOG:  listening on IPv6 address "::1", port 5432
+2025-02-26 20:22:13.418 EST [29799] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-02-26 20:22:13.418 EST [29799] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2025-02-26 20:22:13.420 EST [29800] LOG:  database system was shut down at 2025-02-26 20:22:06 EST
+2025-02-26 20:22:13.422 EST [29799] LOG:  database system is ready to accept connections
+2025-02-26 20:24:13.233 EST [29799] LOG:  received smart shutdown request
+2025-02-26 20:24:13.246 EST [29799] LOG:  background worker "logical replication launcher" (PID 29806) exited with exit code 1
+2025-02-26 20:24:13.247 EST [29801] LOG:  shutting down
+2025-02-26 20:24:13.255 EST [29799] LOG:  database system is shut down
+2025-02-26 20:26:14.833 EST [30320] LOG:  starting PostgreSQL 14.15 (Homebrew) on aarch64-apple-darwin24.1.0, compiled by Apple clang version 16.0.0 (clang-1600.0.26.4), 64-bit
+2025-02-26 20:26:14.841 EST [30320] LOG:  listening on IPv6 address "::1", port 5432
+2025-02-26 20:26:14.841 EST [30320] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-02-26 20:26:14.841 EST [30320] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2025-02-26 20:26:14.843 EST [30322] LOG:  database system was shut down at 2025-02-26 20:26:08 EST
+2025-02-26 20:26:14.845 EST [30320] LOG:  database system is ready to accept connections
+2025-02-26 20:27:14.582 EST [30320] LOG:  received smart shutdown request
+2025-02-26 20:27:14.586 EST [30320] LOG:  background worker "logical replication launcher" (PID 30328) exited with exit code 1
+2025-02-26 20:27:14.586 EST [30323] LOG:  shutting down
+2025-02-26 20:27:14.594 EST [30320] LOG:  database system is shut down

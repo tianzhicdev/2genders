@@ -1,12 +1,10 @@
-
-
-BASIC_QUESTIONS = [
+export const BASIC_QUESTIONS = [
     "What is your name?",
     "What is your age?",
     "What is your gender?"
 ]
 
-BINARY_QUESTIONS = [
+export const BINARY_QUESTIONS = [
   {
     "Original Statement": "I genuinely like who I am, even when I make mistakes.",
     "Rephrased Version": "I’m not perfect, but I’m perfectly me.",
@@ -109,7 +107,7 @@ BINARY_QUESTIONS = [
   }
 ]
 
-FREE_QUESTIONS = [
+export const FREE_QUESTIONS = [
   "What makes you excited?",
   "What makes you sad?",
 ]
