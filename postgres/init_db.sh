@@ -13,8 +13,8 @@ TEMP_SQL_FILE="/tmp/init_commands.sql"
 # Initialize PostgreSQL cluster if not exists
 if [ ! -d "$DATA_DIR" ]; then
     initdb --username=abc -D "$DATA_DIR"
-    # Update the PostgreSQL configuration to use port 3005
-    echo "port = 3005" >> "$DATA_DIR/postgresql.conf"
+    # Ensure the PostgreSQL configuration file is used
+    cp "$(dirname "$0")/postgresql.conf" "$DATA_DIR/postgresql.conf"
 fi
 
 # Start PostgreSQL if not already running
@@ -23,8 +23,6 @@ if ! pg_ctl -D "$DATA_DIR" status > /dev/null 2>&1; then
 else
     echo "PostgreSQL is already running."
 fi
-
-
 
 # Create SQL commands file
 cat > "$TEMP_SQL_FILE" <<EOF
