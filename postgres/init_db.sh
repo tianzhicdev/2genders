@@ -13,8 +13,9 @@ TEMP_SQL_FILE="/tmp/init_commands.sql"
 # Initialize PostgreSQL cluster if not exists
 if [ ! -d "$DATA_DIR" ]; then
     initdb --username=abc -D "$DATA_DIR"
-    # Ensure the PostgreSQL configuration file is used
+    # Ensure the PostgreSQL configuration and hba file are used
     cp "$(dirname "$0")/postgresql.conf" "$DATA_DIR/postgresql.conf"
+    cp "$(dirname "$0")/pg_hba.conf" "$DATA_DIR/pg_hba.conf"
 fi
 
 # Start PostgreSQL if not already running
