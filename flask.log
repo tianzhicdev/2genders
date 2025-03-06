@@ -79,3 +79,9 @@
 127.0.0.1 - - [26/Feb/2025 15:16:30] "[35m[1mPOST /api/profile HTTP/1.1[0m" 201 -
 127.0.0.1 - - [26/Feb/2025 15:16:30] "[35m[1mPOST /api/profile HTTP/1.1[0m" 201 -
 127.0.0.1 - - [26/Feb/2025 15:16:30] "[35m[1mPOST /api/profile HTTP/1.1[0m" 201 -
+ * Detected change in '/Users/biubiu/projects/2genders/api-server-flask/api/routes.py', reloading
+ * Restarting with stat
+Traceback (most recent call last):
+  File "/Users/biubiu/projects/2genders/svc.py", line 4, in <module>
+    import config  # Import the config module
+ModuleNotFoundError: No module named 'config'

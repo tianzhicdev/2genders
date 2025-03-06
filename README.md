@@ -6,6 +6,9 @@
 
 todo:
 1. frontend:
+    - [ ] submit user email at the end. (we will let the user to use the email to login or create an account. we do not require registering after the survey.)
+    
+
     - [ ] landing page
     - [ ] round selector.
     - [ ] profile picture upload. 

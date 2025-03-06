@@ -63,7 +63,7 @@ END
 EOF
 
 # Execute SQL commands
-psql -h localhost -p $PORT -U abc postgres -f "$TEMP_SQL_FILE"
+psql -h localhost -p $PORT -U $USER postgres -f "$TEMP_SQL_FILE"
 
 # Stop PostgreSQL
 # pg_ctl -D "$DATA_DIR" stop

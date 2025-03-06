@@ -1,0 +1,111 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+h1 {
+  text-align: center;
+}
+
+.question {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+label {
+  margin-bottom: 10px;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+input[type="range"] {
+  width: 80%;
+  margin: 20px 0;
+}
+
+input[type="text"] {
+  width: 80%;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 1em;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+.awesome-button {
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.awesome-button:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 600px) {
+  .Questions {
+    padding: 10px;
+  }
+
+  input[type="text"],
+  input[type="range"] {
+    width: 100%;
+  }
+
+  .awesome-button {
+    font-size: 0.9em;
+    padding: 8px 16px;
+  }
+}
+
+.Questions-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .Questions-logo {
+    animation: Questions-logo-spin infinite 20s linear;
+  }
+}
+
+.Questions-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.Questions-link {
+  color: #61dafb;
+}
+
+@keyframes Questions-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
