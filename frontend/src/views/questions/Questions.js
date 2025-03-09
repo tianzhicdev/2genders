@@ -111,20 +111,24 @@ function Questions() {
     const currentQuestion = questionsWithImages[currentStep];
     if (!currentQuestion) return null;
 
+    const handleButtonClick = (value) => {
+      setFormData(prevData => ({
+        ...prevData,
+        [currentQuestion.id]: value
+      }));
+    };
+
     return (
       <div className="question">
         <label className="question-label" htmlFor={currentQuestion.id}>{currentQuestion.question}</label>
         <div className="input-container">
           {currentQuestion.type === 'binary' ? (
-            <input
-              type="range"
-              id={currentQuestion.id}
-              name={currentQuestion.id}
-              min="0"
-              max="10"
-              value={formData[currentQuestion.id]}
-              onChange={handleChange}
-            />
+            <div className="button-group">
+              <button onClick={() => handleButtonClick(0)}>Not true at all</button>
+              <button onClick={() => handleButtonClick(3.3)}>Meh</button>
+              <button onClick={() => handleButtonClick(6.6)}>Kind of true</button>
+              <button onClick={() => handleButtonClick(10)}>Yes! That is me</button>
+            </div>
           ) : currentQuestion.type === 'email' ? (
             <input
               type="email"
@@ -159,21 +163,19 @@ function Questions() {
 
   return (
     <div className="Questions" style={appStyle}>
-      <label className="app-title">2Genders - Find your match</label>
+      <label className="app-title">2Genders - Find Your Match</label>
       {message ? (
         <p>{message}</p>
       ) : (
         <form onSubmit={currentStep === questionsWithImages.length - 1 ? handleSubmit : (e) => { e.preventDefault(); handleNext(); }}>
           {renderQuestion()}
           <div className="buttons">
-            <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-              <div>
-                {currentStep > 0 && <Button variant="contained" color="primary" onClick={handleBack}>Back</Button>}
-              </div>
-              <div>
-                {currentStep < questionsWithImages.length - 1 && <Button variant="contained" color="primary" onClick={handleNext}>Next</Button>}
-                {currentStep === questionsWithImages.length - 1 && <Button variant="contained" color="primary" onClick={handleSubmit}>Submit</Button>}
-              </div>
+            <div>
+              {currentStep > 0 && <button className="back-button" onClick={handleBack}>Back</button>}
+            </div>
+            <div>
+              {currentStep < questionsWithImages.length - 1 && <button className="next-button" onClick={handleNext}>Next</button>}
+              {currentStep === questionsWithImages.length - 1 && <button className="submit-button" onClick={handleSubmit}>Submit</button>}
             </div>
           </div>
         </form>
