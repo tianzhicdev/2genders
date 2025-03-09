@@ -178,10 +178,10 @@ function Questions() {
   } : {};
 
   return (
-    <div className="Questions" 
-    style={appStyle}
-    >
-      <h1>2Genders - find your match</h1>
+    <div className="Questions" style={appStyle}>
+      <h1>
+        2Genders - Find your match
+      </h1>
       {message ? (
         <p>{message}</p>
       ) : (

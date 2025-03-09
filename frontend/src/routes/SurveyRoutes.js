@@ -19,7 +19,7 @@ const SurveyRoutes = () => {
 
     return (
         <Route path={['/q']}>
-            <MinimalLayout>
+            {/* <MinimalLayout> */}
                 <Switch location={location} key={location.pathname}>
                     <NavMotion>
                         {/* <GuestGuard> */}
@@ -27,7 +27,7 @@ const SurveyRoutes = () => {
                         {/* </GuestGuard> */}
                     </NavMotion>
                 </Switch>
-            </MinimalLayout>
+            {/* </MinimalLayout> */}
         </Route>
     );
 };
