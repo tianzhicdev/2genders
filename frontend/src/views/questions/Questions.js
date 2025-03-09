@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Questions.css';
-import { BINARY_QUESTIONS, FREE_QUESTIONS, BASIC_QUESTIONS } from './config';
+import { RANGE_QUESTIONS, FREE_QUESTIONS, BASIC_QUESTIONS, BINARY_QUESTIONS } from './config';
 import { Button } from '@material-ui/core';
 import as1 from '../../assets/images/animals/as1.png';
 import as2 from '../../assets/images/animals/as2.jpg';
@@ -8,22 +8,29 @@ import as3 from '../../assets/images/animals/as3.webp';
 
 function Questions() {
   const allQuestions = [
+    ...RANGE_QUESTIONS.map((q, index) => ({
+      type: 'range',
+      id: q.name,
+      question: q.rephrased_version,
+      image: null
+    })),
     ...BINARY_QUESTIONS.map((q, index) => ({
       type: 'binary',
-      id: `binary_${index + 1}`,
-      question: q["Rephrased Version"],
+      id: q.name,
+      question: q.question,
+      options: q.options,
       image: null
     })),
     ...FREE_QUESTIONS.map((q, index) => ({
       type: 'free',
-      id: `free_${index + 1}`,
-      question: q,
+      id: q.name,
+      question: q.question,
       image: null
     })),
     ...BASIC_QUESTIONS.map((q, index) => ({
       type: 'basic',
-      id: `basic_${index + 1}`,
-      question: q,
+      id: q.name,
+      question: q.question,
       image: null
     })),
     {
@@ -37,7 +44,7 @@ function Questions() {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState(
     allQuestions.reduce((acc, q) => {
-      acc[q.id] = q.type === 'binary' ? 5 : '';
+      acc[q.id] = q.type === 'range' ? 5 : '';
       return acc;
     }, {})
   );
@@ -72,15 +79,55 @@ function Questions() {
     }));
   };
 
-  const handleNext = () => {
-    if (currentStep < questionsWithImages.length - 1) {
-      setCurrentStep(prev => prev + 1);
-    }
+  const isAgeValid = (age) => {
+    const ageInt = parseInt(age, 10);
+    return ageInt >= 15 && ageInt <= 100;
   };
 
-  const handleBack = () => {
-    if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1);
+  const isEmailValid = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const isNicknameValid = (nickname) => {
+    return nickname.length > 0 && nickname.length <= 20;
+  };
+
+  const handleButtonClick = (value, questionId) => {
+    
+    setFormData(prevData => ({
+      ...prevData,
+      [questionId]: value
+    }));
+    handleNext();
+  };
+
+  const handleNext = () => {
+    const currentQuestion = questionsWithImages[currentStep];
+    
+    if (currentQuestion.type === 'basic' && currentQuestion.id === 'enter_your_age') {
+      if (!isAgeValid(formData[currentQuestion.id])) {
+        alert('Please enter a valid age between 15 and 100.');
+        return;
+      }
+    }
+    
+    if (currentQuestion.type === 'basic' && currentQuestion.id === 'enter_your_nickname') {
+      if (!isNicknameValid(formData[currentQuestion.id])) {
+        alert('Please enter a nickname between 1 and 20 characters.');
+        return;
+      }
+    }
+    
+    if (currentQuestion.type === 'email') {
+      if (!isEmailValid(formData[currentQuestion.id])) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+    }
+    
+    if (currentStep < questionsWithImages.length - 1) {
+      setCurrentStep(prev => prev + 1);
     }
   };
 
@@ -88,13 +135,20 @@ function Questions() {
     if (e && e.preventDefault) {
       e.preventDefault();
     }
+    
+    // Final email validation before submission
+    if (!isEmailValid(formData.email)) {
+      alert('Please enter a valid email address before submitting.');
+      return;
+    }
+    
     try {
       const response = await fetch('http://localhost:5000/api/profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body:  JSON.stringify({ profile: formData })
       });
       const result = await response.json();
       if (response.ok) {
@@ -111,24 +165,65 @@ function Questions() {
     const currentQuestion = questionsWithImages[currentStep];
     if (!currentQuestion) return null;
 
-    const handleButtonClick = (value) => {
-      setFormData(prevData => ({
-        ...prevData,
-        [currentQuestion.id]: value
-      }));
-    };
-
     return (
       <div className="question">
-        <label className="question-label" htmlFor={currentQuestion.id}>{currentQuestion.question}</label>
+        <div className="progress-indicator">
+          Question {currentStep + 1}/{questionsWithImages.length}
+        </div>
+        <label className="question-label" htmlFor={currentQuestion.id}>
+          {currentQuestion.question}
+        </label>
         <div className="input-container">
-          {currentQuestion.type === 'binary' ? (
+          {currentQuestion.type === 'range' ? (
             <div className="button-group">
-              <button onClick={() => handleButtonClick(0)}>Not true at all</button>
-              <button onClick={() => handleButtonClick(3.3)}>Meh</button>
-              <button onClick={() => handleButtonClick(6.6)}>Kind of true</button>
-              <button onClick={() => handleButtonClick(10)}>Yes! That is me</button>
+              <button
+                type="button"
+                onClick={() => handleButtonClick(0, currentQuestion.id)}
+              >
+                Not true at all
+              </button>
+              <button
+                type="button"
+                onClick={() => handleButtonClick(3.3, currentQuestion.id)}
+              >
+                Meh
+              </button>
+              <button
+                type="button"
+                onClick={() => handleButtonClick(6.6, currentQuestion.id)}
+              >
+                Kind of true
+              </button>
+              <button
+                type="button"
+                onClick={() => handleButtonClick(10, currentQuestion.id)}
+              >
+                Yes! That is me
+              </button>
             </div>
+          ) : currentQuestion.type === 'binary' ? (
+            <div className="button-group">
+              {currentQuestion.options.map((option, index) => (
+                <button
+                  type="button"
+                  key={index}
+                  onClick={() => handleButtonClick(option, currentQuestion.id)}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          ) : currentQuestion.type === 'free' ? (
+            <textarea
+              id={currentQuestion.id}
+              name={currentQuestion.id}
+              value={formData[currentQuestion.id]}
+              onChange={handleChange}
+              rows={5}
+              cols={40}
+              placeholder="Write as much as you want"
+              required
+            />
           ) : currentQuestion.type === 'email' ? (
             <input
               type="email"
@@ -164,6 +259,9 @@ function Questions() {
   return (
     <div className="Questions" style={appStyle}>
       <label className="app-title">2Genders - Find Your Match</label>
+      <div className="progress-indicator">
+        Question {currentStep + 1}/{questionsWithImages.length}
+      </div>
       {message ? (
         <p>{message}</p>
       ) : (
@@ -171,11 +269,28 @@ function Questions() {
           {renderQuestion()}
           <div className="buttons">
             <div>
-              {currentStep > 0 && <button className="back-button" onClick={handleBack}>Back</button>}
-            </div>
-            <div>
-              {currentStep < questionsWithImages.length - 1 && <button className="next-button" onClick={handleNext}>Next</button>}
-              {currentStep === questionsWithImages.length - 1 && <button className="submit-button" onClick={handleSubmit}>Submit</button>}
+              {currentStep === questionsWithImages.length - 1 ? (
+                <button
+                  type="submit"
+                  className="submit-button"
+                  onClick={handleSubmit}
+                >
+                  Submit
+                </button>
+              ) : (
+                (currentQuestion &&
+                  (currentQuestion.type === 'basic' ||
+                    currentQuestion.type === 'free' ||
+                    currentQuestion.type === 'email')) && (
+                  <button
+                    type="button"
+                    className="next-button"
+                    onClick={handleNext}
+                  >
+                    Next
+                  </button>
+                )
+              )}
             </div>
           </div>
         </form>
