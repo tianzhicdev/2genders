@@ -6,8 +6,7 @@ import as1 from '../../assets/images/animals/as1.png';
 import as2 from '../../assets/images/animals/as2.jpg';
 import as3 from '../../assets/images/animals/as3.webp';
 
-function Questions() {  
-  // Combine all questions in the desired order
+function Questions() {
   const allQuestions = [
     ...BINARY_QUESTIONS.map((q, index) => ({
       type: 'binary',
@@ -38,33 +37,17 @@ function Questions() {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState(
     allQuestions.reduce((acc, q) => {
-      acc[q.id] = q.type === 'binary' ? 5 : ''; // Default value for binary questions is 5
+      acc[q.id] = q.type === 'binary' ? 5 : '';
       return acc;
     }, {})
   );
   const [message, setMessage] = useState('');
   const [questionsWithImages, setQuestionsWithImages] = useState(allQuestions);
 
-  // Load random animal images for each question
   useEffect(() => {
     const loadRandomImages = async () => {
       try {
-        // This would typically be a dynamic import of all animal images
-        // For demonstration, we'll simulate with a list of animal image paths
-        const animalImages = [
-          as1,
-          as2,
-          as3,
-          // '../../assets/images/animals/as3.svg',
-          // '../../assets/images/animals/as4.svg',
-          // '../../assets/images/animals/as5.svg',
-          // '../../assets/images/animals/as6.svg',
-          // '../../assets/images/animals/as7.svg',
-          // '../../assets/images/animals/as8.svg',
-          // '../../assets/images/animals/as9.svg',
-        ];
-
-        // Assign a random image to each question
+        const animalImages = [as1, as2, as3];
         const updatedQuestions = allQuestions.map(q => {
           const randomIndex = Math.floor(Math.random() * animalImages.length);
           return {
@@ -72,7 +55,6 @@ function Questions() {
             image: animalImages[randomIndex]
           };
         });
-
         setQuestionsWithImages(updatedQuestions);
       } catch (error) {
         console.error('Failed to load animal images:', error);
@@ -131,7 +113,7 @@ function Questions() {
 
     return (
       <div className="question">
-        <label htmlFor={currentQuestion.id}>{currentQuestion.question}</label>
+        <label className="question-label" htmlFor={currentQuestion.id}>{currentQuestion.question}</label>
         <div className="input-container">
           {currentQuestion.type === 'binary' ? (
             <input
@@ -167,11 +149,9 @@ function Questions() {
     );
   };
 
-  // Get the current question's image for the background
   const currentQuestion = questionsWithImages[currentStep];
   const appStyle = currentQuestion && currentQuestion.image ? {
     backgroundImage: `url(${currentQuestion.image})`,
-    // backgroundImage:`url(../../assets/images/animals/as1.png)`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat'
@@ -179,9 +159,7 @@ function Questions() {
 
   return (
     <div className="Questions" style={appStyle}>
-      <h1>
-        2Genders - Find your match
-      </h1>
+      <label className="app-title">2Genders - Find your match</label>
       {message ? (
         <p>{message}</p>
       ) : (
