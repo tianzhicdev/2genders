@@ -1,7 +1,7 @@
 export const BASIC_QUESTIONS = [
-    "What is your name?",
-    "What is your age?",
-    "What is your gender?"
+    "Enter your nickname",
+    "Enter your age",
+    "Enter your gender"
 ]
 
 export const BINARY_QUESTIONS = [

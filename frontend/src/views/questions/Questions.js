@@ -1,26 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Questions.css';
 import { BINARY_QUESTIONS, FREE_QUESTIONS, BASIC_QUESTIONS } from './config';
 import { Button } from '@material-ui/core';
+import as1 from '../../assets/images/animals/as1.png';
+import as2 from '../../assets/images/animals/as2.jpg';
+import as3 from '../../assets/images/animals/as3.webp';
 
-function Questions() {
+function Questions() {  
   // Combine all questions in the desired order
   const allQuestions = [
     ...BINARY_QUESTIONS.map((q, index) => ({
       type: 'binary',
       id: `binary_${index + 1}`,
-      question: q["Rephrased Version"]
+      question: q["Rephrased Version"],
+      image: null
     })),
     ...FREE_QUESTIONS.map((q, index) => ({
       type: 'free',
       id: `free_${index + 1}`,
-      question: q
+      question: q,
+      image: null
     })),
     ...BASIC_QUESTIONS.map((q, index) => ({
       type: 'basic',
       id: `basic_${index + 1}`,
-      question: q
-    }))
+      question: q,
+      image: null
+    })),
+    {
+      type: 'email',
+      id: 'email',
+      question: 'Please enter your email address',
+      image: null
+    }
   ];
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -31,6 +43,44 @@ function Questions() {
     }, {})
   );
   const [message, setMessage] = useState('');
+  const [questionsWithImages, setQuestionsWithImages] = useState(allQuestions);
+
+  // Load random animal images for each question
+  useEffect(() => {
+    const loadRandomImages = async () => {
+      try {
+        // This would typically be a dynamic import of all animal images
+        // For demonstration, we'll simulate with a list of animal image paths
+        const animalImages = [
+          as1,
+          as2,
+          as3,
+          // '../../assets/images/animals/as3.svg',
+          // '../../assets/images/animals/as4.svg',
+          // '../../assets/images/animals/as5.svg',
+          // '../../assets/images/animals/as6.svg',
+          // '../../assets/images/animals/as7.svg',
+          // '../../assets/images/animals/as8.svg',
+          // '../../assets/images/animals/as9.svg',
+        ];
+
+        // Assign a random image to each question
+        const updatedQuestions = allQuestions.map(q => {
+          const randomIndex = Math.floor(Math.random() * animalImages.length);
+          return {
+            ...q,
+            image: animalImages[randomIndex]
+          };
+        });
+
+        setQuestionsWithImages(updatedQuestions);
+      } catch (error) {
+        console.error('Failed to load animal images:', error);
+      }
+    };
+
+    loadRandomImages();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,7 +91,7 @@ function Questions() {
   };
 
   const handleNext = () => {
-    if (currentStep < allQuestions.length - 1) {
+    if (currentStep < questionsWithImages.length - 1) {
       setCurrentStep(prev => prev + 1);
     }
   };
@@ -57,9 +107,7 @@ function Questions() {
       e.preventDefault();
     }
     try {
-
       const response = await fetch('http://localhost:5000/api/profile', {
-      // const response = await fetch('http://marcus-mini.is-very-nice.org:3005/api/profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -78,48 +126,77 @@ function Questions() {
   };
 
   const renderQuestion = () => {
-    const currentQuestion = allQuestions[currentStep];
+    const currentQuestion = questionsWithImages[currentStep];
     if (!currentQuestion) return null;
 
     return (
       <div className="question">
         <label htmlFor={currentQuestion.id}>{currentQuestion.question}</label>
-        {currentQuestion.type === 'binary' ? (
-          <input
-            type="range"
-            id={currentQuestion.id}
-            name={currentQuestion.id}
-            min="0"
-            max="10"
-            value={formData[currentQuestion.id]}
-            onChange={handleChange}
-          />
-        ) : (
-          <input
-            type="text"
-            id={currentQuestion.id}
-            name={currentQuestion.id}
-            value={formData[currentQuestion.id]}
-            onChange={handleChange}
-            required
-          />
-        )}
+        <div className="input-container">
+          {currentQuestion.type === 'binary' ? (
+            <input
+              type="range"
+              id={currentQuestion.id}
+              name={currentQuestion.id}
+              min="0"
+              max="10"
+              value={formData[currentQuestion.id]}
+              onChange={handleChange}
+            />
+          ) : currentQuestion.type === 'email' ? (
+            <input
+              type="email"
+              id={currentQuestion.id}
+              name={currentQuestion.id}
+              value={formData[currentQuestion.id]}
+              onChange={handleChange}
+              required
+            />
+          ) : (
+            <input
+              type="text"
+              id={currentQuestion.id}
+              name={currentQuestion.id}
+              value={formData[currentQuestion.id]}
+              onChange={handleChange}
+              required
+            />
+          )}
+        </div>
       </div>
     );
   };
 
+  // Get the current question's image for the background
+  const currentQuestion = questionsWithImages[currentStep];
+  const appStyle = currentQuestion && currentQuestion.image ? {
+    backgroundImage: `url(${currentQuestion.image})`,
+    // backgroundImage:`url(../../assets/images/animals/as1.png)`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat'
+  } : {};
+
   return (
-    <div className="Questions">
+    <div className="Questions" 
+    style={appStyle}
+    >
       <h1>2Genders - find your match</h1>
       {message ? (
         <p>{message}</p>
       ) : (
-        <form onSubmit={currentStep === allQuestions.length - 1 ? handleSubmit : (e) => { e.preventDefault(); handleNext(); }}>
+        <form onSubmit={currentStep === questionsWithImages.length - 1 ? handleSubmit : (e) => { e.preventDefault(); handleNext(); }}>
           {renderQuestion()}
           <div className="buttons">
-            {currentStep > 0 && <Button variant="contained" color="primary" onClick={handleBack}>Back</Button>}
-            {currentStep < allQuestions.length - 1 && <Button variant="contained" color="primary" onClick={handleNext}>Next</Button>}
-            {currentStep === allQuestions.length - 1 && <Button variant="contained" color="primary" onClick={handleSubmit}>Submit</Button>}
+            <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+              <div>
+                {currentStep > 0 && <Button variant="contained" color="primary" onClick={handleBack}>Back</Button>}
+              </div>
+              <div>
+                {currentStep < questionsWithImages.length - 1 && <Button variant="contained" color="primary" onClick={handleNext}>Next</Button>}
+                {currentStep === questionsWithImages.length - 1 && <Button variant="contained" color="primary" onClick={handleSubmit}>Submit</Button>}
+              </div>
+            </div>
           </div>
         </form>
       )}
