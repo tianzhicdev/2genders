@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Questions.css';
 import { RANGE_QUESTIONS, FREE_QUESTIONS, BASIC_QUESTIONS, BINARY_QUESTIONS } from './config';
-import landing from '../../assets/images/animals/landing.jpg';
+import landing from '../../assets/images/landing.jpg';
 
 
 function Questions() {
