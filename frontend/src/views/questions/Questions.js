@@ -168,49 +168,49 @@ function Questions() {
         <div className="progress-indicator md:text-xl lg:text-2xl">
           Question {currentStep + 1}/{questionsWithImages.length}
         </div>
-        <label className="question-label md:w-3/4 md:max-w-2xl md:text-2xl lg:text-3xl" htmlFor={currentQuestion.id}>
+        <label className="question-label md:w-4/5 lg:w-3/4 md:max-w-2xl md:text-xl lg:text-2xl" htmlFor={currentQuestion.id}>
           {currentQuestion.question}
         </label>
         <div className="input-container md:my-12">
           {currentQuestion.type === 'range' ? (
-            <div className="button-group md:gap-4 md:max-w-md lg:max-w-lg">
+            <div className="button-group md:gap-4 md:w-4/5 lg:w-3/4 md:max-w-xl">
               <button
                 type="button"
                 onClick={() => handleButtonClick(0, currentQuestion.id)}
-                className="bg-green-500 hover:opacity-80 md:py-4 md:text-xl touch-manipulation"
+                className="bg-green-500 hover:opacity-80 md:py-4 md:text-lg lg:text-xl touch-manipulation"
               >
                 Not true at all
               </button>
               <button
                 type="button"
                 onClick={() => handleButtonClick(3.3, currentQuestion.id)}
-                className="bg-green-600 hover:opacity-80 md:py-4 md:text-xl touch-manipulation"
+                className="bg-green-600 hover:opacity-80 md:py-4 md:text-lg lg:text-xl touch-manipulation"
               >
                 Meh
               </button>
               <button
                 type="button"
                 onClick={() => handleButtonClick(6.6, currentQuestion.id)}
-                className="bg-green-700 hover:opacity-80 md:py-4 md:text-xl touch-manipulation"
+                className="bg-green-700 hover:opacity-80 md:py-4 md:text-lg lg:text-xl touch-manipulation"
               >
                 Kind of true
               </button>
               <button
                 type="button"
                 onClick={() => handleButtonClick(10, currentQuestion.id)}
-                className="bg-green-800 hover:opacity-80 md:py-4 md:text-xl touch-manipulation"
+                className="bg-green-800 hover:opacity-80 md:py-4 md:text-lg lg:text-xl touch-manipulation"
               >
                 Yes! That is me
               </button>
             </div>
           ) : currentQuestion.type === 'binary' ? (
-            <div className="button-group md:gap-4 md:max-w-md lg:max-w-lg">
+            <div className="button-group md:gap-4 md:w-4/5 lg:w-3/4 md:max-w-xl">
               {currentQuestion.options.map((option, index) => (
                 <button
                   type="button"
                   key={index}
                   onClick={() => handleButtonClick(option, currentQuestion.id)}
-                  className="bg-blue-500 hover:opacity-80 md:py-4 md:text-xl touch-manipulation"
+                  className="bg-blue-500 hover:opacity-80 md:py-4 md:text-lg lg:text-xl touch-manipulation"
                 >
                   {option}
                 </button>
@@ -226,7 +226,7 @@ function Questions() {
               cols={40}
               placeholder="Write as much as you want"
               required
-              className="w-full p-2.5 mb-5 text-base md:p-4 md:text-lg lg:text-xl md:w-3/4 md:max-w-2xl"
+              className="w-full p-2.5 mb-5 text-base md:p-4 md:text-lg lg:text-xl md:w-4/5 lg:w-3/4 md:max-w-2xl bg-white border border-gray-300 rounded-md shadow-sm"
             />
           ) : currentQuestion.type === 'email' ? (
             <input
@@ -236,7 +236,7 @@ function Questions() {
               value={formData[currentQuestion.id]}
               onChange={handleChange}
               required
-              className="w-full p-2.5 mb-5 text-base md:p-4 md:text-lg lg:text-xl md:w-3/4 md:max-w-2xl"
+              className="w-full p-2.5 mb-5 text-base md:p-4 md:text-lg lg:text-xl md:w-4/5 lg:w-3/4 md:max-w-2xl bg-white border border-gray-300 rounded-md shadow-sm"
             />
           ) : (
             <input
@@ -246,7 +246,7 @@ function Questions() {
               value={formData[currentQuestion.id]}
               onChange={handleChange}
               required
-              className="w-full p-2.5 mb-5 text-base md:p-4 md:text-lg lg:text-xl md:w-3/4 md:max-w-2xl"
+              className="w-full p-2.5 mb-5 text-base md:p-4 md:text-lg lg:text-xl md:w-4/5 lg:w-3/4 md:max-w-2xl bg-white border border-gray-300 rounded-md shadow-sm"
             />
           )}
         </div>
@@ -281,7 +281,7 @@ function Questions() {
               {currentStep === questionsWithImages.length - 1 ? (
                 <button
                   type="submit"
-                  className="submit-button md:py-4 md:px-8 md:text-xl touch-manipulation"
+                  className="submit-button md:py-4 md:px-8 md:text-lg lg:text-xl touch-manipulation"
                   onClick={handleSubmit}
                 >
                   Submit
@@ -293,7 +293,7 @@ function Questions() {
                     currentQuestion.type === 'email')) && (
                   <button
                     type="button"
-                    className="next-button md:py-4 md:px-8 md:text-xl touch-manipulation"
+                    className="next-button md:py-4 md:px-8 md:text-lg lg:text-xl touch-manipulation"
                     onClick={handleNext}
                   >
                     Next
