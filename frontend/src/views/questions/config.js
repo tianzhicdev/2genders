@@ -1,4 +1,12 @@
-export const BASIC_QUESTIONS = [
+
+  export const LANDING_QUESTIONS = [
+    {
+      name: "start",
+      question: "Answer soul searching questions to find your match"
+    },
+  ];
+
+  export const BASIC_QUESTIONS = [
   {
     name: "enter_your_nickname",
     question: "Enter your nickname"
@@ -9,18 +17,18 @@ export const BASIC_QUESTIONS = [
   }
 ];
 
-export const RANGE_QUESTIONS = [
-  {
-    name: "self_acceptance",
-    original_statement: "I genuinely like who I am, even when I make mistakes.",
-    rephrased_version: "I'm not perfect, but I'm perfectly me.",
-    reasoning_and_unexpected_insight: "Uses a casual tone to emphasize self-acceptance, inspired by Instagram captions; unexpectedly, humor highlights imperfection as a strength."
-  },
+export const MULTIPLE_CHOICE_QUESTIONS = [
   {
     name: "being_true_to_myself",
     original_statement: "Being true to myself matters more than fitting in with others.",
     rephrased_version: "I'm not everyone's cup of tea, but I'm someone's shot of whiskey.",
     reasoning_and_unexpected_insight: "Metaphor from social media shows uniqueness, with an unexpected twist that being different is valued by the right people."
+  },
+  {
+    name: "self_acceptance",
+    original_statement: "I genuinely like who I am, even when I make mistakes.",
+    rephrased_version: "I'm not perfect, but I'm perfectly me.",
+    reasoning_and_unexpected_insight: "Uses a casual tone to emphasize self-acceptance, inspired by Instagram captions; unexpectedly, humor highlights imperfection as a strength."
   },
   {
     name: "sharing_fears_or_insecurities",

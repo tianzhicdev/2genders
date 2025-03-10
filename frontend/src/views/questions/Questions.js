@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import './Questions.css';
-import { RANGE_QUESTIONS, FREE_QUESTIONS, BASIC_QUESTIONS, BINARY_QUESTIONS } from './config';
+import { LANDING_QUESTIONS, MULTIPLE_CHOICE_QUESTIONS, FREE_QUESTIONS, BASIC_QUESTIONS, BINARY_QUESTIONS } from './config';
 import landing from '../../assets/images/landing.jpg';
 
 
 function Questions() {
   const allQuestions = [
-    ...RANGE_QUESTIONS.map((q, index) => ({
-      type: 'range',
+    ...LANDING_QUESTIONS.map((q, index) => ({
+      type: 'landing',
       id: q.name,
-      question: q.rephrased_version,
+      question: q.question,
+      options: ['Start'],
       image: null
     })),
     ...BINARY_QUESTIONS.map((q, index) => ({
@@ -17,6 +18,12 @@ function Questions() {
       id: q.name,
       question: q.question,
       options: q.options,
+      image: null
+    })),
+    ...MULTIPLE_CHOICE_QUESTIONS.map((q, index) => ({
+      type: 'range',
+      id: q.name,
+      question: q.rephrased_version,
       image: null
     })),
     ...FREE_QUESTIONS.map((q, index) => ({
@@ -141,7 +148,7 @@ function Questions() {
     }
     
     try {
-      const response = await fetch('http://localhost:5000/api/profile', {
+      const response = await fetch('http://marcus-mini.is-very-nice.org:3005/api/profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -172,7 +179,17 @@ function Questions() {
           {currentQuestion.question}
         </label>
         <div className="input-container md:my-12">
-          {currentQuestion.type === 'range' ? (
+          {currentQuestion.type === 'landing' ? (
+            <div className="button-group md:gap-4 md:w-4/5 lg:w-3/4 md:max-w-xl">
+              <button
+                type="button"
+                onClick={() => handleButtonClick('Start', currentQuestion.id)}
+                className="bg-blue-500 hover:opacity-80 md:py-4 md:text-lg lg:text-xl touch-manipulation"
+              >
+                Start
+              </button>
+            </div>
+          ) : currentQuestion.type === 'range' ? (
             <div className="button-group md:gap-4 md:w-4/5 lg:w-3/4 md:max-w-xl">
               <button
                 type="button"
@@ -210,7 +227,9 @@ function Questions() {
                   type="button"
                   key={index}
                   onClick={() => handleButtonClick(option, currentQuestion.id)}
-                  className="bg-blue-500 hover:opacity-80 md:py-4 md:text-lg lg:text-xl touch-manipulation"
+                  className={`bg-blue-500 hover:opacity-80 md:py-4 md:text-lg lg:text-xl touch-manipulation ${
+                    option === 'Male' ? 'male-button' : option === 'Female' ? 'female-button' : ''
+                  }`}
                 >
                   {option}
                 </button>
@@ -266,7 +285,7 @@ function Questions() {
 
   return (
     <div className="Questions md:py-6 lg:py-8" style={appStyle}>
-      <label className="app-title md:text-3xl lg:text-4xl">2Genders - Find Your Match</label>
+      <label className="app-title md:text-3xl lg:text-4xl">2Genders - Finds Your Match</label>
       <div className="progress-indicator md:text-xl lg:text-2xl">
         Question {currentStep + 1}/{questionsWithImages.length}
       </div>

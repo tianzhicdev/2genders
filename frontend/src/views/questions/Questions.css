@@ -235,11 +235,13 @@ input[type="text"] {
 }
 
 .button-group .male-button {
-  background-color: blue;
+  background-color: blue !important;
+  color: white !important;
 }
 
 .button-group .female-button {
-  background-color: #FE6B8B;
+  background-color: #FE6B8B !important;
+  color: white !important;
 }
 
 .progress-indicator {
