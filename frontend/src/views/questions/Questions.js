@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './Questions.css';
 import { RANGE_QUESTIONS, FREE_QUESTIONS, BASIC_QUESTIONS, BINARY_QUESTIONS } from './config';
-import { Button } from '@material-ui/core';
-import as1 from '../../assets/images/animals/as1.png';
-import as2 from '../../assets/images/animals/as2.jpg';
-import as3 from '../../assets/images/animals/as3.webp';
+import landing from '../../assets/images/animals/landing.jpg';
+
 
 function Questions() {
   const allQuestions = [
@@ -54,7 +52,7 @@ function Questions() {
   useEffect(() => {
     const loadRandomImages = async () => {
       try {
-        const animalImages = [as1, as2, as3];
+        const animalImages = [landing];
         const updatedQuestions = allQuestions.map(q => {
           const randomIndex = Math.floor(Math.random() * animalImages.length);
           return {
