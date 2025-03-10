@@ -133,16 +133,26 @@ input[type="text"] {
     padding: 10px;
   }
 
-  input[type="text"],
-  input[type="range"] {
-    width: 100%;
+  .app-title,
+  .question-label,
+  .progress-indicator {
+    font-size: 1.2em; /* Adjust font size for smaller screens */
   }
 
+  input[type="text"],
+  input[type="range"],
+  input[type="email"],
+  textarea {
+    width: 100%;
+    font-size: 1em; /* Ensure text input is readable */
+  }
+
+  .button-group button,
   .buttons .back-button,
   .buttons .next-button,
   .buttons .submit-button {
-    font-size: 0.9em;
-    padding: 8px 16px;
+    font-size: 1em; /* Adjust button font size */
+    padding: 12px 20px; /* Adjust button padding */
   }
 }
 
