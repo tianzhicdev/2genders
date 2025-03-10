@@ -148,7 +148,7 @@ function Questions() {
     }
     
     try {
-      const response = await fetch('http://marcus-mini.is-very-nice.org:3005/api/profile', {
+      const response = await fetch('http://marcus-mini.is-very-nice.org:3006/api/profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
