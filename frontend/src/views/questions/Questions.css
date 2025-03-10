@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 @font-face {
   font-family: 'EightBitDragon';
   src: url('../../assets/fonts/EightBitDragon-anqx.ttf') format('truetype'); /* Adjust the path as necessary */
@@ -254,4 +256,50 @@ input[type="text"] {
   font-weight: bold;
   padding: 5px;
   border-radius: 5px;
+}
+
+/* For extra tall screens like 1400px × 4700px */
+@media (min-height: 1800px) {
+  .question {
+    justify-content: center;
+    padding-top: 10vh;
+    padding-bottom: 10vh;
+  }
+  
+  .question-label {
+    top: 40%;
+    transform: translate(-50%, -100%);
+    margin-bottom: 5vh;
+  }
+  
+  .input-container {
+    margin-top: 25vh;
+  }
+  
+  .button-group {
+    gap: 3vh;
+  }
+  
+  .button-group button {
+    max-width: 300px;
+    padding: 20px;
+    font-size: 1.5em;
+  }
+}
+
+/* Improve touch targets for mobile */
+button, 
+input[type="text"],
+input[type="email"],
+textarea {
+  touch-action: manipulation;
+}
+
+/* Adjust backgroound for very tall screens */
+@media (min-height: 2000px) {
+  .Questions {
+    background-size: contain;
+    background-position: top center;
+    background-color: #f5f5f5;
+  }
 }
