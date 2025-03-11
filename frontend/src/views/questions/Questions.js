@@ -157,7 +157,7 @@ function Questions() {
       });
       const result = await response.json();
       if (response.ok) {
-        setMessage('Thank you for answering. We will send you the results via email.');
+        setMessage('We will search the database for your match. Search results will be sent to your email.');
       } else {
         setMessage(`Error: ${result.error}`);
       }
@@ -169,6 +169,8 @@ function Questions() {
   const renderQuestion = () => {
     const currentQuestion = questionsWithImages[currentStep];
     if (!currentQuestion) return null;
+
+
 
     return (
       <div className="question md:py-8">
@@ -217,7 +219,7 @@ function Questions() {
                 onClick={() => handleButtonClick(10, currentQuestion.id)}
                 className="bg-green-800 hover:opacity-80 md:py-4 md:text-lg lg:text-xl touch-manipulation"
               >
-                Yes! That is me
+                Totally
               </button>
             </div>
           ) : currentQuestion.type === 'binary' ? (
@@ -290,7 +292,7 @@ function Questions() {
         Question {currentStep + 1}/{questionsWithImages.length}
       </div>
       {message ? (
-        <p className="md:text-xl lg:text-2xl md:p-6 text-center bg-white bg-opacity-80 rounded-lg mx-auto max-w-2xl">{message}</p>
+        <label className="question-label md:w-4/5 lg:w-3/4 md:max-w-2xl md:text-xl lg:text-2xl">{message}</label>
       ) : (
         <form onSubmit={currentStep === questionsWithImages.length - 1 ? handleSubmit : (e) => { e.preventDefault(); handleNext(); }}
               className="md:h-auto flex flex-col justify-between">

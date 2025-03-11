@@ -37,6 +37,8 @@ def get_db_connection():
         user=db_config['remote']['db_user'],
         password=db_config['remote']['db_password']
     )
+
+    
     # Log connection details
     with conn.cursor() as cursor:
         cursor.execute("SELECT current_database(), current_user, inet_client_addr(), inet_client_port()")
@@ -77,9 +79,7 @@ def token_required(f):
 
     @wraps(f)
     def decorator(*args, **kwargs):
-
         token = None
-
         if "authorization" in request.headers:
             token = request.headers["authorization"]
 
