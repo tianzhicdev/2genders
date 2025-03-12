@@ -125,7 +125,7 @@ function Questions() {
   // Function to track user events
   const trackUserEvent = async (action, details = {}) => {
     try {
-      await fetch('https://marcus-mini.is-very-nice.org/api/user_event', {
+      await fetch('https://2genders.dyndns.org/api/user_event', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -250,7 +250,7 @@ function Questions() {
     });
     
     try {
-      const response = await fetch('https://marcus-mini.is-very-nice.org/api/profile', {
+      const response = await fetch('https://2genders.dyndns.org/api/profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -357,7 +357,7 @@ function Questions() {
               onChange={handleChange}
               rows={5}
               cols={40}
-              placeholder="Write as much as you want"
+              placeholder="Be accurate"
               required
               className="w-full p-2.5 mb-5 text-base md:p-4 md:text-lg lg:text-xl md:w-4/5 lg:w-3/4 md:max-w-2xl bg-white border border-gray-300 rounded-md shadow-sm"
             />

@@ -11,12 +11,13 @@ stage 2: be able to match users and list the matched users.
 todo:
 1. frontend:
     stage 1:
-    - [ ] submit user email at the end. (we will let the user to use the email to login or create an account. we do not require registering after the survey.)
-    - [ ] make the questions page good looking and work well on mobile.
-    - [ ] landing page
-    - [ ] round selector.
-    - [ ] profile picture upload. 
-    
+    - [v] submit user email at the end. (we will let the user to use the email to login or create an account. we do not require registering after the survey.)
+    - [v] make the questions page good looking and work well on mobile.
+    - [v] landing page
+    - [v] user events
+    - [ ] 2genders.vip redirect verification.
+    - [ ] snapchat ads
+    - [ ] twitter ads
     stage 2:
     - [ ] list of matched users, 
     - [ ] be able to share contacts.
