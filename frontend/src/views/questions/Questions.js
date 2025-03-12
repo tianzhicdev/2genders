@@ -59,11 +59,46 @@ function Questions() {
 
   useEffect(() => {
     const generateVisitorId = () => {
-      return  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     };
     
-    setVisitorId(generateVisitorId());
+    const newVisitorId = generateVisitorId();
+    setVisitorId(newVisitorId);
     
+    // Track page load event
+    trackUserEvent('page_load', {
+      visitor_id: newVisitorId,
+      page: 'questions',
+      timestamp: new Date().toISOString(),
+      screen_width: window.innerWidth,
+      screen_height: window.innerHeight,
+      user_agent: navigator.userAgent,
+      language: navigator.language,
+      platform: navigator.platform,
+      cookies_enabled: navigator.cookieEnabled,
+      do_not_track: navigator.doNotTrack,
+      connection_type: navigator.connection ? navigator.connection.effectiveType : 'unknown',
+      time_zone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      referrer: document.referrer,
+      browser_plugins: Array.from(navigator.plugins).map(p => p.name).join(','),
+      device_memory: navigator.deviceMemory || 'unknown',
+      hardware_concurrency: navigator.hardwareConcurrency || 'unknown',
+      color_depth: window.screen.colorDepth,
+      pixel_ratio: window.devicePixelRatio
+    });
+    
+    // Track when user leaves the page
+    const handleBeforeUnload = () => {
+      trackUserEvent('page_exit', {
+        page: 'questions',
+        current_step: currentStep,
+        questions_answered: Object.keys(formData).filter(key => formData[key] !== '').length
+      });
+    };
+    
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    
+    // Move loadRandomImages function before the return statement
     const loadRandomImages = async () => {
       try {
         const animalImages = [landing];
@@ -81,18 +116,22 @@ function Questions() {
     };
 
     loadRandomImages();
+    
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
   }, []);
 
   // Function to track user events
   const trackUserEvent = async (action, details = {}) => {
     try {
-      await fetch('/api/user_event', {
+      await fetch('https://marcus-mini.is-very-nice.org/api/user_event', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          visitor_id: visitorId,
+          visitor_id: details.visitor_id || visitorId,
           timestamp: new Date().toISOString(),
           action,
           details
@@ -109,12 +148,7 @@ function Questions() {
       ...prevData,
       [name]: value
     }));
-    
-    // Track input change event
-    trackUserEvent('input_change', {
-      question_id: name,
-      question_type: questionsWithImages.find(q => q.id === name)?.type
-    });
+
   };
 
   const isAgeValid = (age) => {
