@@ -141,6 +141,36 @@ class CreateProfile(Resource):
         except Exception as e:
             return {"error": str(e)}, 500
 
+@rest_api.route('/api/user_event', methods=['POST'])
+class UserEvent(Resource):
+    """
+    Records user events for analytics
+    """
+
+    def post(self):
+        data = request.get_json()  # Get JSON data from request
+        if not data:
+            return {"error": "Invalid input"}, 400
+
+        visitor_id = data.get('visitor_id')
+        if not visitor_id:
+            return {"error": "Missing visitor_id"}, 400
+
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor()
+            cur.execute(
+                "INSERT INTO user_event (visitor_id, data) VALUES (%s, %s) RETURNING id;",
+                (visitor_id, Json(data))
+            )
+            event_id = cur.fetchone()[0]
+            conn.commit()
+            cur.close()
+            conn.close()
+            return {"success": True, "event_id": event_id}, 201
+        except Exception as e:
+            return {"error": str(e)}, 500
+
 
 
 @rest_api.route('/api/users/register')

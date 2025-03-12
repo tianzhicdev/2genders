@@ -55,8 +55,15 @@ function Questions() {
   );
   const [message, setMessage] = useState('');
   const [questionsWithImages, setQuestionsWithImages] = useState(allQuestions);
+  const [visitorId, setVisitorId] = useState('');
 
   useEffect(() => {
+    const generateVisitorId = () => {
+      return  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    };
+    
+    setVisitorId(generateVisitorId());
+    
     const loadRandomImages = async () => {
       try {
         const animalImages = [landing];
@@ -76,12 +83,38 @@ function Questions() {
     loadRandomImages();
   }, []);
 
+  // Function to track user events
+  const trackUserEvent = async (action, details = {}) => {
+    try {
+      await fetch('/api/user_event', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          visitor_id: visitorId,
+          timestamp: new Date().toISOString(),
+          action,
+          details
+        })
+      });
+    } catch (error) {
+      console.error('Failed to track user event:', error);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevData => ({
       ...prevData,
       [name]: value
     }));
+    
+    // Track input change event
+    trackUserEvent('input_change', {
+      question_id: name,
+      question_type: questionsWithImages.find(q => q.id === name)?.type
+    });
   };
 
   const isAgeValid = (age) => {
@@ -99,11 +132,18 @@ function Questions() {
   };
 
   const handleButtonClick = (value, questionId) => {
-    
     setFormData(prevData => ({
       ...prevData,
       [questionId]: value
     }));
+    
+    // Track button click event
+    trackUserEvent('button_click', {
+      question_id: questionId,
+      question_type: questionsWithImages.find(q => q.id === questionId)?.type,
+      selected_value: value
+    });
+    
     handleNext();
   };
 
@@ -113,6 +153,10 @@ function Questions() {
     if (currentQuestion.type === 'basic' && currentQuestion.id === 'enter_your_age') {
       if (!isAgeValid(formData[currentQuestion.id])) {
         alert('Please enter a valid age between 15 and 100.');
+        trackUserEvent('validation_error', {
+          question_id: currentQuestion.id,
+          error_type: 'invalid_age'
+        });
         return;
       }
     }
@@ -120,6 +164,10 @@ function Questions() {
     if (currentQuestion.type === 'basic' && currentQuestion.id === 'enter_your_nickname') {
       if (!isNicknameValid(formData[currentQuestion.id])) {
         alert('Please enter a nickname between 1 and 20 characters.');
+        trackUserEvent('validation_error', {
+          question_id: currentQuestion.id,
+          error_type: 'invalid_nickname'
+        });
         return;
       }
     }
@@ -127,9 +175,20 @@ function Questions() {
     if (currentQuestion.type === 'email') {
       if (!isEmailValid(formData[currentQuestion.id])) {
         alert('Please enter a valid email address.');
+        trackUserEvent('validation_error', {
+          question_id: currentQuestion.id,
+          error_type: 'invalid_email'
+        });
         return;
       }
     }
+    
+    // Track next button click
+    trackUserEvent('next_question', {
+      from_question_id: currentQuestion.id,
+      from_question_type: currentQuestion.type,
+      to_question_index: currentStep + 1
+    });
     
     if (currentStep < questionsWithImages.length - 1) {
       setCurrentStep(prev => prev + 1);
@@ -144,8 +203,17 @@ function Questions() {
     // Final email validation before submission
     if (!isEmailValid(formData.email)) {
       alert('Please enter a valid email address before submitting.');
+      trackUserEvent('validation_error', {
+        question_id: 'email',
+        error_type: 'invalid_email_at_submission'
+      });
       return;
     }
+    
+    // Track form submission
+    trackUserEvent('form_submit', {
+      total_questions_answered: currentStep + 1
+    });
     
     try {
       const response = await fetch('https://marcus-mini.is-very-nice.org/api/profile', {
@@ -153,24 +221,34 @@ function Questions() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body:  JSON.stringify({ profile: formData })
+        body: JSON.stringify({ 
+          profile: formData,
+          visitor_id: visitorId
+        })
       });
       const result = await response.json();
       if (response.ok) {
         setMessage('We will search the database for your match. Search results will be sent to your email.');
+        trackUserEvent('submission_success', {
+          response: result
+        });
       } else {
         setMessage(`Error: ${result.error}`);
+        trackUserEvent('submission_error', {
+          error: result.error
+        });
       }
     } catch (error) {
       setMessage(`Error: ${error.message}`);
+      trackUserEvent('submission_exception', {
+        error_message: error.message
+      });
     }
   };
 
   const renderQuestion = () => {
     const currentQuestion = questionsWithImages[currentStep];
     if (!currentQuestion) return null;
-
-
 
     return (
       <div className="question md:py-8">
