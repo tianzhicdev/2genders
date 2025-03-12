@@ -45,19 +45,37 @@ CREATE TABLE IF NOT EXISTS profile (
     key UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     data JSONB NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS user_event (
+    id SERIAL PRIMARY KEY,
+    visitor_id TEXT NOT NULL,
+    data JSONB NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS user_event_visitor_id_idx ON user_event(visitor_id);
 COMMIT;
 
 -- Test record operations
 DO \$$
 DECLARE 
     test_key UUID;
+    test_event_id INTEGER;
 BEGIN
     INSERT INTO profile (data) VALUES ('{"test": "initial_data"}') RETURNING key INTO test_key;
     
-    RAISE NOTICE 'Inserted record: %', (SELECT row_to_json(profile) FROM profile WHERE key = test_key);
+    RAISE NOTICE 'Inserted profile record: %', (SELECT row_to_json(profile) FROM profile WHERE key = test_key);
+    
+    INSERT INTO user_event (visitor_id, data) 
+    VALUES ('test_visitor_123', '{"action": "test_action", "details": {"test": true}}') 
+    RETURNING id INTO test_event_id;
+    
+    RAISE NOTICE 'Inserted user_event record: %', (SELECT row_to_json(user_event) FROM user_event WHERE id = test_event_id);
     
     DELETE FROM profile WHERE key = test_key;
-    RAISE NOTICE 'Deleted test record';
+    DELETE FROM user_event WHERE id = test_event_id;
+    
+    RAISE NOTICE 'Deleted test records';
 END
 \$$;
 EOF
