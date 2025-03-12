@@ -15,7 +15,7 @@ todo:
     - [v] make the questions page good looking and work well on mobile.
     - [v] landing page
     - [v] user events
-    - [ ] 2genders.vip redirect verification.
+    - [v] 2genders.vip redirect verification.
     - [ ] snapchat ads
     - [ ] twitter ads
     stage 2:
