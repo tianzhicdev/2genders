@@ -405,7 +405,7 @@ function Questions() {
 
   return (
     <div className="Questions md:py-6 lg:py-8" style={appStyle}>
-      <label className="app-title md:text-3xl lg:text-4xl">2Genders - Finds Your Match</label>
+      <label className="app-title md:text-3xl lg:text-4xl">2Genders - Find Your Match</label>
       {/* <div className="progress-indicator md:text-xl lg:text-2xl">
         Question {currentStep + 1}/{questionsWithImages.length}
       </div> */}

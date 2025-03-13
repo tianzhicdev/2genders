@@ -27,6 +27,7 @@ todo:
     stage 2:
     - [ ] match table, a,b,a_data,b_data {a_data: {social_shared: true}}
     - [ ] ai job to find matched users
+    - [ ] auto refresh certbot for https
     - [ ] APIs: 
         create account: email,password,password_confirm
         login: email,password
