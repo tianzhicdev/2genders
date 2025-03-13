@@ -284,10 +284,15 @@ function Questions() {
     const currentQuestion = questionsWithImages[currentStep];
     if (!currentQuestion) return null;
 
+    // Count only multiple choice questions
+    const multiChoiceQuestions = questionsWithImages.filter(q => q.type === 'range' );
+    const currentMultiChoiceIndex = questionsWithImages.slice(0, currentStep + 1).filter(q => q.type === 'range').length;
+    const totalMultiChoiceQuestions = multiChoiceQuestions.length;
+
     return (
       <div className="question md:py-8">
         <div className="progress-indicator md:text-xl lg:text-2xl">
-          Question {currentStep}/{questionsWithImages.length-1}
+          Question {currentMultiChoiceIndex}/{totalMultiChoiceQuestions}
           
         </div>
         <label className="question-label md:w-4/5 lg:w-3/4 md:max-w-2xl md:text-xl lg:text-2xl" htmlFor={currentQuestion.id}>

@@ -149,12 +149,12 @@ export const BINARY_QUESTIONS = [
 ];
 
 export const FREE_QUESTIONS = [
-  {
-    name: "what_makes_you_excited",
-    question: "What makes you excited?"
-  },
-  {
-    name: "what_makes_you_sad",
-    question: "What makes you sad?"
-  }
+  // {
+  //   name: "what_makes_you_excited",
+  //   question: "What makes you excited?"
+  // },
+  // {
+  //   name: "what_makes_you_sad",
+  //   question: "What makes you sad?"
+  // }
 ];
