@@ -18,7 +18,7 @@ const LoginRoutes = () => {
 
     return (
         <Route path={['/login', '/register']}>
-            <MinimalLayout>
+            {/* <MinimalLayout> */}
                 <Switch location={location} key={location.pathname}>
                     <NavMotion>
                         <GuestGuard>
@@ -27,7 +27,7 @@ const LoginRoutes = () => {
                         </GuestGuard>
                     </NavMotion>
                 </Switch>
-            </MinimalLayout>
+            {/* </MinimalLayout> */}
         </Route>
     );
 };

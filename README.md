@@ -19,15 +19,29 @@ todo:
     - [ ] snapchat ads
     - [ ] twitter ads
     stage 2:
+        match users (1):
     - [ ] list of matched users, 
     - [ ] be able to share contacts.
+
+    - [ ] generate 30 vibe questions.
+    - [ ] show 2 pics to get the vibe.
 2. backend:
     stage 1:
     - [v] save the survey data to the database.
     stage 2:
-    - [ ] match table, a,b,a_data,b_data {a_data: {social_shared: true}}
-    - [ ] ai job to find matched users
-    - [ ] auto refresh certbot for https
-    - [ ] APIs: 
-        create account: email,password,password_confirm
-        login: email,password
+        match users (1):
+        - [ ] match table, a,b,a_data,b_data {a_data: {social_shared: true}}
+        - [ ] ai job to find matched users
+        - [ ] [infra] auto refresh certbot for https
+        authentication (1):
+            google login:
+            [v] create account: email,password,password_confirm
+            [v] login: email,password
+        metrics(2):
+        - [ ] metrics: the time it takes to answer each question.
+        - [ ] male, female ratio
+        
+    3. marketing:
+        stage 2 (2):
+        - [ ] more users channels - x.com
+            - [ ] different questions for different channels

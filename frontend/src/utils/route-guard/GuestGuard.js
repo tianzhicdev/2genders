@@ -17,7 +17,7 @@ const GuestGuard = ({ children }) => {
     const { isLoggedIn } = account;
 
     if (isLoggedIn) {
-        return <Redirect to={config.defaultPath} />;
+        return <Redirect to={config.dashboard} />;
     }
 
     return children;

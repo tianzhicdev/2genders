@@ -146,6 +146,8 @@ const ProfileSection = () => {
             })
             .catch(function (error) {
                 console.log('error - ', error);
+
+                dispatcher({ type: LOGOUT }); // log out anyway
             });
     };
     const handleToggle = () => {
